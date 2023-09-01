@@ -1,9 +1,7 @@
 ﻿using ImageMagick;
-using System.IO;
-
 public static class ImageConverterUtility
 {
-    public static void ConvertToPng(string inputFilePath, string outputFolderPath)
+    public static void ConvertToPng(string inputFilePath, string? outputFolderPath)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
 
@@ -15,7 +13,7 @@ public static class ImageConverterUtility
         }
     }
     //To JPG
-    public static void ConvertToJpg(string inputFilePath, string outputFolderPath)
+    public static void ConvertToJpg(string? inputFilePath, string? outputFolderPath)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
 
@@ -28,7 +26,7 @@ public static class ImageConverterUtility
         }
     }
     // Overload with quality parameter
-    public static void ConvertToJpg(string inputFilePath, string outputFolderPath, int quality)
+    public static void ConvertToJpg(string inputFilePath, string? outputFolderPath, int quality)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
 
@@ -40,8 +38,9 @@ public static class ImageConverterUtility
             image.Write(jpgFilePath);
         }
     }
+    
 
-    private static void EnsureOutputDirectoryExists(string outputFolderPath)
+    private static void EnsureOutputDirectoryExists(string? outputFolderPath)
     {
         if (!Directory.Exists(outputFolderPath))
         {
