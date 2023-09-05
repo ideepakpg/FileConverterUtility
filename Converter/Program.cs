@@ -1,3 +1,5 @@
+namespace Converter;
+
 class Program
 {
     static void Main(string[] args)
@@ -5,14 +7,20 @@ class Program
         
         string? inputFile = null;
         string? outputFolder = null;
+        
+        
+        //If you want to add more conversions, add them here.
         Dictionary<string, Action> conversions = new Dictionary<string, Action>()
         {
             {"jpg", () => ImageConverterUtility.ConvertToJpg(inputFile, outputFolder)},
             {"png", () => ImageConverterUtility.ConvertToPng(inputFile, outputFolder)},
         };
+        //CLI Starts here.
+        //Accept input file paths here
+        
         Console.WriteLine("Paste the file path of your file:");
         inputFile = Console.ReadLine();
-        //If inputfile is surrounded by quotes, remove them
+
         if (inputFile.StartsWith("\"") && inputFile.EndsWith("\""))
         {
             inputFile = inputFile.Substring(1, inputFile.Length - 2);
@@ -26,6 +34,9 @@ class Program
         {
             outputFolder = Path.GetDirectoryName(inputFile);
         }
+        
+        
+        //Conversion starts here. User selects the conversion type.
         Console.WriteLine("Select the conversion type:");
         foreach (var conversion in conversions)
         {

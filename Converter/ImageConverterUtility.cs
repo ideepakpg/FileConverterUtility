@@ -1,4 +1,8 @@
-﻿using ImageMagick;
+﻿
+using ImageMagick;
+
+namespace Converter;
+
 public static class ImageConverterUtility
 {
     public static void ConvertToPng(string inputFilePath, string? outputFolderPath)
