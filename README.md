@@ -1,6 +1,6 @@
 # FileConverterUtility
 This is a WIP File converter built in C#.
-So far, it only includes conversion to JPG and PNG, with more on the way
+So far, it only includes conversion to JPG and PNG, with more file types coming soon
 
 # Issues/How To Help
 Currently we are looking to:
