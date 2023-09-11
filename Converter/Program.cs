@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Converter;
 
 class Program
@@ -8,22 +10,30 @@ class Program
         {
             {"image", () => ImageConverterUtility.CreateImage()},
         };
+        
         Console.WriteLine("What type of file do you want to convert?");
         foreach (var conversion in conversions)
         {
             Console.WriteLine(conversion.Key);
         }
         
-        string? conversionType = Console.ReadLine().ToLower().Trim();
+        conversions[GetConversion(conversions)].Invoke();
+        
+        
+    }
+
+    private static string GetConversion(Dictionary <string, Action> conversions)
+    {
+
+        
+        string? conversionType = Console.ReadLine()?.ToLower().Trim();
         if(conversionType != null && !conversions.ContainsKey(conversionType))
         {
             Console.WriteLine("Invalid conversion type.");
-            return;
+            return GetConversion(conversions);
         }
-
-        if (conversionType != null) conversions[conversionType].Invoke();
         
-        
-        
+        Debug.Assert(conversionType != null, nameof(conversionType) + " != null");
+        return conversionType;
     }
 }
