@@ -3,6 +3,8 @@ using System.IO;
 using System.Transactions;
 using Converter;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -21,12 +23,14 @@ public class ImageConverterUtility : FileConverterUtility
         {
             {"jpg", () => utility.ConvertToJpg(utility._inputFile, utility._outputFolder)},
             {"png", () => utility.ConvertToPng(utility._inputFile, utility._outputFolder)},
+            {"gif", () => utility.ConvertToGif(utility._inputFile, utility._outputFolder)},
         };
 
         utility.getLocations();
         Console.WriteLine("File locations set!");
         utility.setType(conversions);
     }
+    
     public void ConvertToPng(string inputFilePath, string outputFolderPath)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
@@ -48,4 +52,15 @@ public class ImageConverterUtility : FileConverterUtility
             image.Save(jpgFilePath, new JpegEncoder { Quality = quality });
         }
     }
+    public void ConvertToGif(string inputFilePath, string outputFolderPath)
+    {
+        EnsureOutputDirectoryExists(outputFolderPath);
+
+        using (var image = Image.Load(inputFilePath))
+        {
+            string gifFilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".gif");
+            image.Save(gifFilePath, new GifEncoder());
+        }
+    }
+    
 }

@@ -9,6 +9,7 @@ class Program
         Dictionary<string, Action> conversions = new Dictionary<string, Action>()
         {
             {"image", () => ImageConverterUtility.CreateImage()},
+            {"video", () => VideoConverterUtility.CreateVideo()}
         };
         
         Console.WriteLine("What type of file do you want to convert?");
