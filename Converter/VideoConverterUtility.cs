@@ -1,4 +1,6 @@
-﻿namespace Converter;
+﻿using FFMpegCore.Enums;
+
+namespace Converter;
 using FFMpegCore;
 
 public class VideoConverterUtility : FileConverterUtility
@@ -10,10 +12,11 @@ public class VideoConverterUtility : FileConverterUtility
     public static void CreateVideo()
     {
         var utility = new VideoConverterUtility();
-
+        var codec = VideoCodec.LibX264;
         Dictionary<string, Action> conversions = new Dictionary<string, Action>()
         {
             {"mp4", () => utility.ConvertToMp4(utility._inputFile, utility._outputFolder)},
+            {"mp4 codec", () => utility.ConvertToMp4(utility._inputFile, utility._outputFolder, codec)},
             {"mov", () => utility.ConvertToMov(utility._inputFile, utility._outputFolder)},
         };
 
@@ -28,6 +31,14 @@ public class VideoConverterUtility : FileConverterUtility
         string mp4FilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mp4");
         FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(mp4FilePath).ProcessSynchronously();
     }
+    private void ConvertToMp4(string inputFilePath, string outputFolderPath, Codec codec)
+    {
+        EnsureOutputDirectoryExists(outputFolderPath);
+        string mp4FilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mp4");
+        //Specify that coded must be used
+        FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(mp4FilePath, true, options => options.WithVideoCodec(codec)).ProcessSynchronously();
+        
+    }
 
     private void ConvertToMov(string inputFilePath, string outputFolderPath)
     {
@@ -35,6 +46,11 @@ public class VideoConverterUtility : FileConverterUtility
         string movFilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mov");
         FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(movFilePath).ProcessSynchronously();
     }
+    //Other possible arguments for FFMpegArguments:
+    // .WithVideoCodec(VideoCodec.LibX264)
+    // .WithAudioCodec(AudioCodec.Aac)
+    // .WithVariableBitrate(5)
+    // .WithSpeedPreset(Speed.VerySlow)
     
     
 }

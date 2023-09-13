@@ -13,16 +13,15 @@ public abstract class FileConverterUtility
 
         StripQuotes(ref _inputFile);
         
-        Console.WriteLine("Paste the output folder path:");
+        Console.WriteLine("Paste the output folder path (Blank for same folder):");
         _outputFolder = Console.ReadLine();
-        //If outputfolder is blank, use the input folder
+        
         if (string.IsNullOrWhiteSpace(_outputFolder))
         {
             _outputFolder = Path.GetDirectoryName(_inputFile);
         }
         else
             StripQuotes(ref _outputFolder);
-        
     }
 
     protected void setType(Dictionary<string, Action> conversions)
