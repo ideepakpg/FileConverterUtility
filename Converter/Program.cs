@@ -10,7 +10,6 @@ class Program
         {
             {"image", () => ImageConverterUtility.CreateImage()},
             {"video", () => VideoConverterUtility.CreateVideo()},
-            {"download", (() => OnlineVideoDownloader.GetVideo())}
         };
         
         Console.WriteLine("What type of file do you want to convert?");
