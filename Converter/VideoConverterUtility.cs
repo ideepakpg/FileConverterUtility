@@ -31,13 +31,12 @@ public class VideoConverterUtility : FileConverterUtility
         string mp4FilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mp4");
         FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(mp4FilePath).ProcessSynchronously();
     }
+    
     private void ConvertToMp4(string inputFilePath, string outputFolderPath, Codec codec)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
         string mp4FilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mp4");
-        //Specify that coded must be used
         FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(mp4FilePath, true, options => options.WithVideoCodec(codec)).ProcessSynchronously();
-        
     }
 
     private void ConvertToMov(string inputFilePath, string outputFolderPath)
@@ -46,11 +45,5 @@ public class VideoConverterUtility : FileConverterUtility
         string movFilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".mov");
         FFMpegArguments.FromFileInput(inputFilePath).OutputToFile(movFilePath).ProcessSynchronously();
     }
-    //Other possible arguments for FFMpegArguments:
-    // .WithVideoCodec(VideoCodec.LibX264)
-    // .WithAudioCodec(AudioCodec.Aac)
-    // .WithVariableBitrate(5)
-    // .WithSpeedPreset(Speed.VerySlow)
-    
     
 }

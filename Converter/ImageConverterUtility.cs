@@ -7,6 +7,7 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Bmp;
 using SixLabors.ImageSharp.Processing;
 
 public class ImageConverterUtility : FileConverterUtility
@@ -35,22 +36,55 @@ public class ImageConverterUtility : FileConverterUtility
     {
         EnsureOutputDirectoryExists(outputFolderPath);
 
-        using (var image = Image.Load(inputFilePath))
+        try
         {
-            string pngFilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".png");
-            image.Save(pngFilePath, new PngEncoder());
+            using (var image = Image.Load(inputFilePath))
+            {
+                string pngFilePath = Path.Combine(outputFolderPath,
+                    Path.GetFileNameWithoutExtension(inputFilePath) + ".png");
+                image.Save(pngFilePath, new PngEncoder());
+            }
+        }
+        catch(Exception e)
+        {
+            try
+            {
+                BackupImageConverter.ConvertToPng(inputFilePath, outputFolderPath);
+                
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Error converting to PNG.");
+                Console.WriteLine(exception);
+                throw;
+            }
         }
     }
 
-    public void ConvertToJpg(string inputFilePath, string outputFolderPath, int quality = 90)
+    private void ConvertToJpg(string inputFilePath, string outputFolderPath, int quality = 90)
     {
         EnsureOutputDirectoryExists(outputFolderPath);
-
-        using (var image = Image.Load(inputFilePath))
+        try
         {
-            string jpgFilePath = Path.Combine(outputFolderPath, Path.GetFileNameWithoutExtension(inputFilePath) + ".jpg");
-            image.Save(jpgFilePath, new JpegEncoder { Quality = quality });
-        }
+            using (var image = Image.Load(inputFilePath))
+            {
+
+                string jpgFilePath = Path.Combine(outputFolderPath,
+                    Path.GetFileNameWithoutExtension(inputFilePath) + ".jpg");
+                image.Save(jpgFilePath, new JpegEncoder { Quality = quality });
+
+
+            }
+        }catch (UnknownImageFormatException e)
+        {
+            try{BackupImageConverter.ConvertToJpg(inputFilePath, outputFolderPath, quality);}
+            catch (Exception exception)
+            {
+                Console.WriteLine("Error converting to JPG.");
+                Console.WriteLine(exception);
+                throw;
+            }
+        }   
     }
     public void ConvertToGif(string inputFilePath, string outputFolderPath)
     {
